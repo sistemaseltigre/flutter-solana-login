@@ -33,10 +33,9 @@ final GoRouter _router = GoRouter(routes: <GoRoute>[
         return const GeneratePhraseScreen();
       }),
   GoRoute(
-      path: '/password/:privateKey',
+      path: '/passwordSetup/:mnemonic',
       builder: (context, state) {
-        return SetupPasswordScreen(
-            privateKey: state.pathParameters["privateKey"]);
+        return SetupPasswordScreen(mnemonic: state.pathParameters["mnemonic"]);
       }),
   GoRoute(
       path: '/home',

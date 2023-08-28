@@ -10,7 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  @override
+
   final _formKey = GlobalKey<FormState>();
   final passwordController = TextEditingController();
   bool validationFailed = false;
@@ -113,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<bool> _checkForSavedLogin() async {
-    key = await storage.read(key: 'private_key');
+    key = await storage.read(key: 'mnemonic');
     password = await storage.read(key: 'password');
     if (key == null || password == null) {
       return false;

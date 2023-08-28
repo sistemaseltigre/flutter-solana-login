@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solana/base58.dart';
 import 'package:solana/solana.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -113,14 +112,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _readPk() async {
-    final key = await storage.read(key: 'private_key');
-
-    if (key != null) {
-      List<int> bytes = base58decode(key);
-      final publickey = Ed25519HDPublicKey(bytes);
-
+    final mnemonic = await storage.read(key: 'mnemonic');
+    if (mnemonic != null) {
+      final keypair = await Ed25519HDKeyPair.fromMnemonic(mnemonic);
       setState(() {
-        _publicKey = publickey.toString();
+        _publicKey = keypair.address;
       });
       _initializeClient();
     }

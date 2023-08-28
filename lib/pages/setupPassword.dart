@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:solana/solana.dart';
 
 class SetupPasswordScreen extends StatefulWidget {
-  final String? privateKey;
-  SetupPasswordScreen({super.key, required this.privateKey});
+  final String? mnemonic;
+  SetupPasswordScreen({super.key, required this.mnemonic});
 
   @override
   State<SetupPasswordScreen> createState() => _SetupPasswordScreenState();
@@ -65,16 +64,13 @@ class _SetupPasswordScreenState extends State<SetupPasswordScreen> {
 
   void _submit() async {
     if (formKey.currentState!.validate()) {
+      print("validate");
       if (passwordController.text != confirmPasswordController.text) {
         return;
       }
-      final keyPair = await Ed25519HDKeyPair.fromMnemonic(
-        widget.privateKey!,
-      );
-      final prKey = keyPair.address;
 
       await storage.write(key: 'password', value: passwordController.text);
-      await storage.write(key: 'private_key', value: prKey);
+      await storage.write(key: 'mnemonic', value: widget.mnemonic);
 
       GoRouter.of(context).go("/");
     }
